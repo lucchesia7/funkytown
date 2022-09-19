@@ -4,7 +4,7 @@ build-backend = "pdm.pep517.api"
 
 [project]
 name = "funkytown"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
   { name="Alex Lucchesi", email="lucchesia7@gmail.com" },
 ]
@@ -13,7 +13,7 @@ scikit-learn = "*"
 pandas= "*"
 numpy= "*"
 scipy= "*"
-description = "A small example package"
+description = "A labor of passion to bring life to Sorting/Searching Algorithms and other miscellanious functions"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [

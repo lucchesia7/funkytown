@@ -1,4 +1,3 @@
-from sklearn.model_selection import train_test_split
 from scipy import stats
 import pandas as pd
 import numpy as np
@@ -164,36 +163,50 @@ class helper_functions:
     def null_count(self, df):
         return df.isna().sum().sum()
 
-    def tts(self, frac, df):
-        split_df = train_test_split(df, train_size = frac)
-        return split_df
+    def tts(self, frac:float, df: pd.DataFrame):
+        """
+        Input:\n Fraction, float object. Indicative of training size\n
+        df: DataFrame Object. Object to split\n\n
+        Output: Split dataframe into Testing and Training
+        """
+        train = df.sample(frac=frac, random_state=42)
+        test = df.drop(train.index)
+        return train, test
 
     def randomize(self, seed, df):
+        """
+        Input: DataFrame Object.\n
+        Output: Randomized DataFrame
+        """
         return df.sample(frac = 1, random_state = seed)
 
     def list_2_series(self,list_2_series, df):
+        """
+        
+        """
         ser = pd.Series(list_2_series)
         df['list'] = df.append(ser, ignore_index = True)
         return df
 
-    def random_phrase(self):
-        adj = ['Awesome', 'Shiny', 'Impressive', 'Portable', 'Improved']
-        noun = ['Anvil', 'Catapult','Disguise', 'Mousetrap', 'Sword']
-        return f"{adj[np.random.randint(0, len(adj))]} {noun[np.random.randint(0, len(noun))]}"
+    def random_phrase(self, first_word_list: list, second_word_list:list):
+        """
+        
+        """
+        return f"{first_word_list[np.random.randint(0, len(first_word_list))]} {second_word_list[np.random.randint(0, len(second_word_list))]}"
 
-    def random_float(self, min_val, max_val):
+    def random_float(self, min_val:float, max_val:float):
+        """
+        
+        """
         return np.random.uniform(min_val, max_val)
-
-    def random_bowling_score(self):
-        return np.random.randint(0,300)
-
-    def silly_tuple(self):
-        return tuple((self.random_phrase(), self.random_float(1.0, 5.0), self.random_bowling_score()))
-
-    def silly_tuple_list(self, num_tuples=1):
-        return [self.silly_tuple() for num in range(num_tuples)]
     
     def abbr_2_state(self, state_series : pd.Series, abbr_2_state : bool =True):
+        """
+        Input: Series of State Acronyms or names\n
+        Output: The inverse of the input: either Acronyms or Names\n\n
+
+
+        """
         with open('state.txt') as f:
             data = f.read()
         state_dict = ast.literal_eval(data)
@@ -208,16 +221,23 @@ class helper_functions:
             return state_series
     
     def split_dates(date_series : pd.Series):
+        """
+        
+        """
         date_series = pd.to_datetime(date_series)
         return pd.DataFrame(data = {
             'Day' : date_series.dt.day,
             'Month' : date_series.dt.month,
             'Year': date_series.dt.year})
     
-    def rm_outlier(self, df):
+    def rm_outlier(self, df:pd.DataFrame):
+        """
+        Input: DataFrame Object\n
+        Output: Removes outliers from a dataframe object
+        """
         return df[(np.abs(stats.zscore(df)) < 3).all(axis=1)]
     
-    def factors(self, num):
+    def factors(self, num:int):
         """
         Input: Single positive integer\n
         Output: All factors of num in range of 1 -> num \n
@@ -227,7 +247,7 @@ class helper_functions:
                 if num % i == 0:
                     print(i)
     
-    def multi_table(self, num):
+    def multi_table(self, num:int):
         """
         Input: Single positive integer \n
         Output : Multiplication table from 1-10
@@ -259,9 +279,3 @@ class helper_functions:
         x1 = (-b + base)/(2 * a)
         x2 = (-b - base)/(2 * a)
         return x1, x2
-
-if __name__ == '__main__':
-    s = search_algo()
-    l = [1,5,3,76,3,6,9,8,6,3,1,5]
-    print(s.LinearSearch(l, 76))
-    print(s.LinearSearch(l, 99))
